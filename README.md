@@ -23,13 +23,16 @@ $ cd ZSP2018
 Jak widac powyzej - kazdy moze sciagnac nasze repozytorium, stosowne uprawnienia sa natomiast niezbedne do pisania w repozytorium
 
 *  **Zalozenie konta**
+
 Nalezy na stronie [https://github.com](https://github.com) zalozyc konto oraz konieccznie 
 [zweryfikowac adres email](https://github.com/settings/emails)
 
 *  **Dolaczenie do wspolpracownikow projektu**
+
 Prosze na stronie projektu w zakladce "Issues", tj. pod adresem [https://github.com/lorek/ZSP2018/issues](https://github.com/lorek/ZSP2018/issues) wpisac "issue" z informacja o nazwie uzytkownika (jest tam podany przyklad - jest to cos typu forum, po prostu tutaj bede widzial kto z Was zalozyl konto i jaka ono ma nazwe)
 
 *  **Akceptacja 'zaproszenia'**
+
 Wszystkim, ktorzy sie wpisza na [https://github.com/lorek/ZSP2018/issues](https://github.com/lorek/ZSP2018/issues)  (i podadza nazwe uzytkownika) wysle tzw. "zaproszenie", ktore nalezy zaakceptowac (od wtedy bedzie sie pelnoprawnym 'wspolpracownikiem' - zaproszenie powinno przyjsc mailem, mozna tez zobaczyc "Notifications" = 'dzwonek' w prawym gornym rogu)
 
 Po tym, jak dodam uzytkownika jako "wspolpracownika" mozna nadpisywac/dodawac pliki. 
