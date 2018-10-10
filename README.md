@@ -1,4 +1,4 @@
-# ZSP2018
+# ZPS 2018
 Zespolowy Projekt Specjalnosciowy 2018
 
 
