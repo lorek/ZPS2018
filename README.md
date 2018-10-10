@@ -36,7 +36,12 @@ Prosze na stronie projektu w zakladce "Issues", tj. pod adresem [https://github.
 Wszystkim, ktorzy sie wpisza na [https://github.com/lorek/ZSP2018/issues](https://github.com/lorek/ZSP2018/issues)  (i podadza nazwe uzytkownika) wysle tzw. "zaproszenie", ktore nalezy zaakceptowac (od wtedy bedzie sie pelnoprawnym 'wspolpracownikiem' - zaproszenie powinno przyjsc mailem, mozna tez zobaczyc "Notifications" = 'dzwonek' w prawym gornym rogu)
 
 Po tym, jak dodam uzytkownika jako "wspolpracownika" mozna nadpisywac/dodawac pliki. 
+Mozliwe, ze jest tez wymagane ustawienie zmiennych `user.name` oraz `user.email`, co robimy komendami (raz to robimy):
 
+```
+$ git config --global user.name "Jan Kowalski"
+$ git config --global user.email "Jan.Kowalski@mail.com"
+```
 
 `ZADANIE`: 
 * Prosze wowczas w pliku `users` dopisac swoja nazwe uzytkownia
@@ -49,32 +54,9 @@ $ git add users_test/nazwa_uzytkownika.txt
 $ git commit -m 'Zauktalizowany plik users i dodany users_test/nazwa_uzytkownika.txt'
 $ git push
 ```
-(powinien on wowczas spytac o login i haslo uzytkownika)
+
+Powinien on wowczas spytac o login i haslo uzytkownika, moze/powinien je tez zapamietac, zatem pozniejsza praca nie wymaga zbyt czestego podawania nazwy uzytkownika i hasla.
 
 
 
-```javascript
-var s = "JavaScript syntax highlighting";
-alert(s);
-```
-
-```python
-def function():
-    #indenting works just fine in the fenced code block
-    s = "Python syntax highlighting"
-    print s
-```
-
-```ruby
-require 'redcarpet'
-markdown = Redcarpet.new("Hello World!")
-puts markdown.to_html
-```
-
-```
-No language indicated, so no syntax highlighting.
-s = "There is no highlighting for this."
-But let's throw in a <b>tag</b>.
-```
-
-
+ 
