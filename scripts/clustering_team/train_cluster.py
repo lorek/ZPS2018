@@ -1,7 +1,6 @@
 """ TODO:
-    - tworzenie struktury katalogow i zapisywanie, gdzie trzeba
-    - obsluga knn
-    - stale z kodu...
+    - obsluga knn (kdt potrzebne, bo nigdy sie nie doliczy)
+    - przejscie na sklearna, bo tam pewnie to wszystko jest
 """
 
 
@@ -14,7 +13,7 @@ import json
 from json_tricks import dump, dumps, load, loads, strip_comments
 import glob, os
 
-ALLOWED_ALGOS = ["k-means"]
+ALLOWED_ALGOS = ["kmeans"]
 SUBSETS = ["train", "validate"]
 INFI = 2000000000
 
@@ -25,9 +24,9 @@ def ParseArguments():
                             required = False,
                             help = 'data set directory name (features/cats_dogs/sifts/)')
     parser.add_argument('--algorithm',
-                            default = "k-means",
+                            default = "kmeans",
                             required = False,
-                            help='clustering alg. One of [k-means] (def. k-means)')
+                            help='clustering alg. One of [kmeans] (def. kmeans)')
     parser.add_argument('--k',
                             default = 100,
                             required = False,
@@ -40,13 +39,17 @@ def ParseArguments():
 
     args = parser.parse_args()
 
-    return args.features_dir, args.algorithm, args.k, args.knn
+    return args.features_dir, args.algorithm, int(args.k), int(args.knn)
 
 def load_features(features_dir):
     feats_per_utt = {}
     for subs in SUBSETS:
         for utt in glob.glob(features_dir + "/" + subs + "/*/*.json"):
-            feats_file = open(utt)
+            try:
+                feats_file = open(utt)
+            except:
+                print("Couldn't open {}.".format(utt))
+                exit(4)
             feats_per_utt[utt] = loads(load(feats_file))
             feats_file.close()
 
@@ -69,37 +72,65 @@ def find_class(feat, cluster, knn):
 
     return best_center
 
+"""
+    Main part
+"""
+
+# Process args
+
 feats_dir, algorithm, k_par, knn  =  ParseArguments()
 
 if algorithm not in ALLOWED_ALGOS:
-    print("Algorithm unknown.")
+    print("Algorithm {} not allowed. Try one of {}".format(algorithm, ALLOWED_ALGOS))
     exit(2)
 
-cluster = None
+# Load all features
 
-feats_file = open(feats_dir + "sifts_all.json", "r")
+try:
+    feats_path = feats_dir + "sifts_all.json"
+    feats_file = open(feats_path, "r")
+except:
+    print("Couldn't open features file: {}.".format(feats_path))
+    exit(3)
+
 all_feats = loads(load(feats_file, preserve_order = True))
 feats_file.close()
 
-if algorithm == "k-means":
-    whitened_feats = whiten(all_feats) # numpy's k-means requires it
+# Train and save cluster
 
+cluster = None
+params_str = ""
+
+if algorithm == "kmeans":
+    whitened_feats = whiten(all_feats) # numpy's k-means requires it
     cluster = kmeans(whitened_feats, k_par)
+    params_str += str(k_par)
 
 if cluster is not None:
-    out_file = open("dict/cats_dogs/sifts/kmeans" + str(k_par) + "/cluster.json", 'w')
+    cluster_path = "dict/" + "/".join(feats_dir.split("/")[1:3]) + "/" + algorithm + params_str + "/"
+
+    if not os.path.exists(cluster_path):
+        os.makedirs(cluster_path)
+
+    out_file = open(cluster_path + "cluster.json", 'w')
     json.dump(dumps(cluster), out_file)
     out_file.close()
+
+# Load features per utterance (image)
 
 feats_per_utt = load_features(feats_dir)
 
 for utt in feats_per_utt.keys():
-    splitted = utt.split("/")
-    new_path = "dict/" + "/".join(splitted[1:3]) + "/kmeans" + str(k_par) + "/knn0/" + "/".join(splitted[4:]) + ".txt"
+    utt_splt = utt.split("/")
+    no_ext = ".".join(utt_splt[-1].split(".")[:-1])
+    utt_path = cluster_path + "/knn" + str(knn) + "/" + "/".join(utt_splt[4:-1]) + "/"
 
-    print(new_path)
+    print(utt_path)
 
-    out_clustered = open(new_path, 'w')
+    if not os.path.exists(utt_path):
+        os.makedirs(utt_path)
+
+    out_clustered = open(utt_path + no_ext + ".txt", 'w')
     for feat in feats_per_utt[utt]:
         out_clustered.write(str(find_class(feat, cluster, knn)) + "\n")
     out_clustered.close()

@@ -1,47 +1,49 @@
 KLASTERYZACJA
 =============
 
+Jak odpalić?
+--------------
+
+python3.6 scripts/clustering_team/train_cluster.py
+
+Domyślnie odpali się na cats_dogs i siftach, przy kmeans ze 100 centrami.
+Aby sprawdzić pozostałe opcje, użyj parametru --help:
+python3.6 scripts/clustering_team/train_cluster.py --help
+
 Dane wejściowe (co, skąd, w jakim formacie)
 --------------
 
-Na wejściu przyjmujemy SIFTy bądź inne parametry wyznaczone dla obrazków
-ze zbioru uczącego i walidacyjnego. Proponuję umieszczać je w:
-exp/features/<data_set>/. Nazwa pliku to rodzaj użytej parametryzacji, gdzie:
+Opis na podstawie informacji na stronie:
+http://www.math.uni.wroc.pl/~lorek/teaching/2018_proj_zesp.php
 
-* sift - sifty policzone jak w scripts/glob_example.py
-* sift_pca_N - sifty zredukowane do N wymiarów za pomocą pca (w takim przypadku
-zakładamy też istnienie pliku sift_pca_N_mat.json, w którym jest zapisana
+Wrzucam tu na wszelki wypadek.
+
+Na wejściu przyjmujemy SIFTy bądź inne parametry wyznaczone dla obrazków
+ze zbioru uczącego i walidacyjnego, zrzucone do .json tak, jak w scripts/.
+Proponuję umieszczać je w features/<data_set>/<params>, gdzie <params> to rodzaj
+użytej parametryzacji:
+
+* sifts - sifty policzone jak w scripts/glob_example.py
+* sifts_pca_N - sifty zredukowane do N wymiarów za pomocą pca (w takim przypadku
+zakładamy też istnienie pliku sifts_pca_N_mat.json, w którym jest zapisana
 macierz redukcji)
-* TBA
+
+Korzystamy z dwóch rodzajów plików. Jeden to wszystkie sifty zebrane razem,
+bezpośrednio pod opisaną wyżej ścieżką, w pliku <params>_all.json
+(np. sifts_all.json). Oprócz tego dla każdego obrazka z osobna w odpowiednim
+katalogu (odpowiadającym temu, gdzie leżał obrazek. Patrz:
+features/cats_dogs/sifts).
 
 Przykład:
-user@computer:~/ZPS2018$ ls exp/features/cats_dogs/
-sift_pca_32.json sift_pca_32_mat.json sift.json
+user@computer:~/ZPS2018$ ls features/cats_dogs/sifts_pca_32
+sift_pca_32.json sift_pca_32_mat.json train/ validate/
 
 Dane wyjściowe (co, dokąd, w jakim formacie)
 --------------
 
-Wynikiem klasteryzacji jest opis klas, który umożliwia sklasyfikowanie
-nowych punktów. Ponieważ nie wszystkie algorytmy klasteryzacji znamy już teraz,
-proponuję uzywać plików, gdzie w każdej linijce będzie podana plik z zapisanym
-klasyfikatorem i - oddzielone spacjami - inne parametry.
-
-Pierwszym parametrem powinna być ścieżka pliku, na podstawie którego został
-skonstruowany klasyfikator (np. exp/features/cats_dogs/sift_pca_32.json),
-drugim nazwa użytej metody (np. kmeans), a kolejne w zależności od metody.
-Ustalamy:
-
-* k-means - parametry to: kmeans <liczba_centrów>
-* GMM - parametry to: gmm <liczba_rozkładów>
-
-W dalszym ciągu proponuję stosować nazwy oddające to, co znajduje się w pliku,
-jednak nie bazować na nich w kodzie.
-
-Przykład:
-
-user@computer:~/ZPS2018$ cat exp/cluster/cats_dogs/clusters.txt
-sifts_kmeans_15.json exp/features/cats_dogs/sift.json kmeans 15
-sifts_pca_32_gmm_16.json exp/features/cats_dogs/sift_pca_32.json gmm 16
-
-Dane zapisane będą w formacie, jaki wypluwa numpy, za pomocą zrzutu do jsona 
-(patrz scripts/glob_example.py).
+Wynikiem klasteryzacji są pliki odpowiadające poszczególnym zdjęciom,
+zawierające klasy, do których zostały przydzielone sifty .
+Klasa każdego z siftów znajduje się w osobnej linicje (pierwsza odpowiada
+pierwszemu, druga drugiemu itd. zgodnie z kolejnością, w jakiej były w plikach).
+Są to liczby naturalne od 0 do k-1 (#TODO sprawdzić, czy nie od 1, no ale
+szanujmy się...).
