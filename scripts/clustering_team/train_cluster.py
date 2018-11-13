@@ -3,7 +3,6 @@
     - przejscie na sklearna, bo tam pewnie to wszystko jest
 """
 
-
 import cv2
 import numpy as np
 from scipy.cluster.vq import kmeans, whiten
