@@ -1,0 +1,28 @@
+OBLICZANIE SIFTOW DLA ZBIORU DANYCH
+===================================
+
+Jak uruchomic?
+--------------
+
+python scripts/team1/all_sifts.py --data-dir *zbior_danych* --sifts-file *nazwa_pliku_wyjsciowego*
+
+*zbior_danych* - sciezka do katalogu ze zbiorem danych, zakladamy ze zbior podzielony jest na katalogi train i validate, a w kazdym z nich sa katalogi ktorych nazwami sa klasy obrazkow
+
+*nazwa_pliku_wyjsciowego* sciezka do katalogu, do ktorego zostanie zapisany plik wyjsciowy
+
+Dane wejsciowe i wyjsciowe
+--------------------------
+
+Danymi wejsciowymi sa klasy obrazkow umieszczone w katalogach jak wyzej. Po uruchomieniu programu otrzymamy plik z SIFTami dla wszystkich obrazkow z train i validate zapisanymi w formacie .json
+
+Przykladowe uzycie (na zbiorze cats_dogs)
+-----------------------------------------
+
+python scripts/team1/all_sifts_from_dataset.py --data-dir datasets/cats_dogs/ --sifts-file /features/cats_dogs/sifts/cats_dogs_sifts_all.json
+
+Wazna uwaga
+-----------
+
+Plik wyjsciowy zawiera bardzo duzo danych przez co jego wielkosc (dla zbioru danych flowers plik ma 1.7GB) przekracza limit wielkosci plikow, ktore mozemy wrzucac przez git-huba (100MB). Ten plik generujemy na swoim komputerze w sposob opisany wyzej.
+
+
