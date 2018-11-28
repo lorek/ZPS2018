@@ -8,9 +8,8 @@ import numpy as np
 from scipy.cluster.vq import kmeans, whiten
 import sys
 import argparse
-import json
-from json_tricks import dump, dumps, load, loads, strip_comments
 import glob, os
+import pickle
 
 ALLOWED_ALGOS = ["kmeans"]
 SUBSETS = ["train", "validate"]
@@ -40,17 +39,16 @@ def ParseArguments():
 
     return args.features_dir, args.algorithm, int(args.k), int(args.knn)
 
-def load_features(features_dir):
-    feats_per_utt = {}
-    for subs in SUBSETS:
-        for utt in glob.glob(features_dir + "/" + subs + "/*/*.json"):
-            try:
-                feats_file = open(utt)
-            except:
-                print("Couldn't open {}.".format(utt))
-                exit(4)
-            feats_per_utt[utt] = loads(load(feats_file))
-            feats_file.close()
+def load_class_features(class_path):
+    pickle_path = class_path + "/feats.pickle"
+
+    try:
+        feats_file = open(pickle_path, 'rb')
+    except:
+        print("Couldn't open {}.".format(pickle_path))
+        exit(5)
+
+    feats_per_utt = pickle.load(feats_file)
 
     return feats_per_utt
 
@@ -86,13 +84,13 @@ if algorithm not in ALLOWED_ALGOS:
 # Load all features
 
 try:
-    feats_path = feats_dir + "sifts_all.json"
-    feats_file = open(feats_path, "r")
+    feats_path = feats_dir + "sifts_all.pickle"
+    feats_file = open(feats_path, "rb")
 except:
     print("Couldn't open features file: {}.".format(feats_path))
     exit(3)
 
-all_feats = loads(load(feats_file, preserve_order = True))
+all_feats = pickle.load(feats_file)
 feats_file.close()
 
 # Train and save cluster
@@ -111,25 +109,34 @@ if cluster is not None:
     if not os.path.exists(cluster_path):
         os.makedirs(cluster_path)
 
-    out_file = open(cluster_path + "cluster.json", 'w')
-    json.dump(dumps(cluster), out_file)
+    out_file = open(cluster_path + "cluster.pickle", 'wb')
+    pickle.dump(cluster, out_file)
     out_file.close()
 
 # Load features per utterance (image)
 
-feats_per_utt = load_features(feats_dir)
+for subs in SUBSETS:
+    all_classess = glob.glob(feats_dir + "/" + subs + "/*")
 
-for utt in feats_per_utt.keys():
-    utt_splt = utt.split("/")
-    no_ext = ".".join(utt_splt[-1].split(".")[:-1])
-    utt_path = cluster_path + "/knn" + str(knn) + "/" + "/".join(utt_splt[4:-1]) + "/"
+    for class_path in all_classess:
+        feats_per_utt = load_class_features(class_path)
 
-    print(utt_path)
+        for utt in feats_per_utt.keys():
+            utt_splt = list(filter(None, utt.split("/"))) # remove empty strings (coz of ///// in paths)
+            no_ext = ".".join(utt_splt[-1].split(".")[:-1])
+            utt_path = cluster_path + "/knn" + str(knn) + "/" + "/".join(utt_splt[2:-1]) + "/"
 
-    if not os.path.exists(utt_path):
-        os.makedirs(utt_path)
+            if not os.path.exists(utt_path):
+                os.makedirs(utt_path)
 
-    out_clustered = open(utt_path + no_ext + ".txt", 'w')
-    for feat in feats_per_utt[utt]:
-        out_clustered.write(str(find_class(feat, cluster, knn)) + "\n")
-    out_clustered.close()
+            out_clustered = open(utt_path + no_ext + ".txt", 'w')
+
+            hist = [0] * k_par
+
+            for feat in feats_per_utt[utt]:
+                hist[find_class(feat, cluster, knn)] += 1
+
+            for i in range(k_par):
+                out_clustered.write(str(hist[i]) + '\n')
+
+            out_clustered.close()

@@ -7,14 +7,13 @@ import argparse
 import json
 from json_tricks import dump, dumps, load, loads, strip_comments
 import glob, os
-
+import pickle
 
 def ParseArguments():
 	parser = argparse.ArgumentParser(description="Project ")
 	parser.add_argument('--data-dir', default="", required=True, help='data dir')
 	parser.add_argument('--fraction', default="0.1", required=False, help='fraction of files to consider')
 	parser.add_argument('--sifts-file', default="", required=True, help='save all sifts in this file')
- 
 	
 # 28.11.2018: Pawel Lorek: dodalem opcje "--fraction"
 	
@@ -83,14 +82,12 @@ for classs in classes:
 print(sifts_all.shape)
 print("W sumie mamy SIFTow : ", sifts_all.shape[0])
 
-with open(sifts_file , 'w') as outfile:
-	#print(dumps(sifts_all))
-	#json.dump(sifts_all,outfile)
-	json.dump(dumps(sifts_all),outfile)
+if(sifts_file.endswith(".pickle")):
+    print("Using pickle instead of json tricks")
+    with open(sifts_file, 'wb') as outfile:
+        pickle.dump(sifts_all, outfile)
+else:
+    with open(sifts_file, 'w') as outfile:
+	    json.dump(dumps(sifts_all),outfile)
+
 print("koniec")
-
-
-
-		
-
- 
