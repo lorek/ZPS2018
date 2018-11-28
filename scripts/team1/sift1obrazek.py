@@ -32,7 +32,9 @@ print("data-dir = ", data_dir)
 classes=[]
 
 for file in glob.glob(data_dir+"/train/**"): 
-		tmp=file.split('\\')
+		#P. Lorek: UWAGA: byc moze pod Windowsem trzeba ponizsza linie zamienic na:
+		#tmp=file.split('\\')
+		tmp=file.split('/')
 		print(tmp)
 		classes.append(tmp[len(tmp)-1])
 

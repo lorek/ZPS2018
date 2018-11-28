@@ -1,6 +1,7 @@
 
 import cv2
 import numpy as np
+import random
 import sys
 import argparse
 import json
@@ -11,18 +12,20 @@ import glob, os
 def ParseArguments():
 	parser = argparse.ArgumentParser(description="Project ")
 	parser.add_argument('--data-dir', default="", required=True, help='data dir')
+	parser.add_argument('--fraction', default="0.1", required=False, help='fraction of files to consider')
 	parser.add_argument('--sifts-file', default="", required=True, help='save all sifts in this file')
  
 	
+# 28.11.2018: Pawel Lorek: dodalem opcje "--fraction"
 	
 	#parser.add_argument('--show', default='yes', required=False, help='show images?') 
 	args = parser.parse_args()
 	
-	return args.data_dir, args.sifts_file
+	return args.data_dir, args.sifts_file, args.fraction
 
 
 # main progam
-data_dir, sifts_file  =  ParseArguments()
+data_dir, sifts_file, fraction  =  ParseArguments()
 
 print("data-dir = ", data_dir)
  
@@ -34,7 +37,9 @@ print("data-dir = ", data_dir)
 classes=[]
 
 for file in glob.glob(data_dir+"/train/**"): 
-		tmp=file.split('\\')
+		#P. Lorek: UWAGA: byc moze pod Windowsem trzeba ponizsza linie zamienic na:
+		#tmp=file.split('\\')
+		tmp=file.split('/')
 		print(tmp)
 		classes.append(tmp[len(tmp)-1])
 
@@ -49,8 +54,18 @@ counter_tmp = 0;
 
 
 for classs in classes:
+	list1=glob.glob(data_dir+"/train/"+classs+"/**");
+	#PL: shuffle list1
+	random.shuffle(list1)
+	#PL: take first fraction*len of the list 
+	print("list 1 = ", list1)
+	list1=list1[0:max(1,round(float(fraction)*len(list1)))]
+	print("list 1 b = ", list1)
+	list2=glob.glob(data_dir+"/validate/"+classs+"/**");
+	
 	#szukamy wszystkich plikow w data-dir/train oraz data-dir/validate
-	for file in list(np.concatenate((glob.glob(data_dir+"/train/"+classs+"/**"),glob.glob(data_dir+"/validate/"+classs+"/**")))): 
+	#for file in list(np.concatenate((glob.glob(data_dir+"/train/"+classs+"/**"),glob.glob(data_dir+"/validate/"+classs+"/**")))): 
+	for file in list(np.concatenate((list1,list2))): 
 		img = cv2.imread(file)
 		sift = cv2.xfeatures2d.SIFT_create()
 		gray= cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
