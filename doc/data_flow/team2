@@ -19,31 +19,30 @@ http://www.math.uni.wroc.pl/~lorek/teaching/2018_proj_zesp.php
 Wrzucam tu na wszelki wypadek.
 
 Na wejściu przyjmujemy SIFTy bądź inne parametry wyznaczone dla obrazków
-ze zbioru uczącego i walidacyjnego, zrzucone do .json tak, jak w scripts/.
+ze zbioru uczącego i walidacyjnego, zrzucone do .pickle.
 Proponuję umieszczać je w features/<data_set>/<params>, gdzie <params> to rodzaj
 użytej parametryzacji:
 
 * sifts - sifty policzone jak w scripts/glob_example.py
 * sifts_pca_N - sifty zredukowane do N wymiarów za pomocą pca (w takim przypadku
-zakładamy też istnienie pliku sifts_pca_N_mat.json, w którym jest zapisana
+zakładamy też istnienie pliku sifts_pca_N_mat.pickle, w którym jest zapisana
 macierz redukcji)
 
-Korzystamy z dwóch rodzajów plików. Jeden to wszystkie sifty zebrane razem,
-bezpośrednio pod opisaną wyżej ścieżką, w pliku <params>_all.json
-(np. sifts_all.json). Oprócz tego dla każdego obrazka z osobna w odpowiednim
-katalogu (odpowiadającym temu, gdzie leżał obrazek. Patrz:
-features/cats_dogs/sifts).
+Korzystamy z dwóch rodzajów plików. Jeden to pewien procent wszystkich siftów,
+zebrany razem, bezpośrednio pod opisaną wyżej ścieżką, w pliku
+<params>_all.pickle (np. sifts_all.pickle). Oprócz tego dla każdej klasy
+z osobna słownik, gdzie kluczem jest ścieżka pliku, a wartością policzone
+parametry, umieszczony w odpowiedającym klasie katalogu, pod nazwą feats.pickle.
+(Patrz: features/cats_dogs/sifts/).
 
 Przykład:
 user@computer:~/ZPS2018$ ls features/cats_dogs/sifts_pca_32
-sift_pca_32.json sift_pca_32_mat.json train/ validate/
+sift_pca_32.pickle sift_pca_32_mat.pickle train/ validate/
 
 Dane wyjściowe (co, dokąd, w jakim formacie)
 --------------
 
 Wynikiem klasteryzacji są pliki odpowiadające poszczególnym zdjęciom,
-zawierające klasy, do których zostały przydzielone sifty .
-Klasa każdego z siftów znajduje się w osobnej linicje (pierwsza odpowiada
-pierwszemu, druga drugiemu itd. zgodnie z kolejnością, w jakiej były w plikach).
-Są to liczby naturalne od 0 do k-1 (#TODO sprawdzić, czy nie od 1, no ale
-szanujmy się...).
+zawierające klasy, do których zostały przydzielone dane.
+W każdej linijce pliku wyjściowego znajduje się liczba, oznaczająca, ile razy
+wystąpiło dane ,,słowo''.

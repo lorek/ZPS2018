@@ -8,12 +8,12 @@ python scripts/team1/sift1obrazek.py --data-dir *zbior_danych* --sift-dir *nazwa
 
 *zbior_danych* - sciezka do katalogu ze zbiorem danych, zakladamy ze zbior podzielony jest na katalogi train i validate, a w kazdym z nich sa katalogi ktorych nazwami sa klasy obrazkow
 
-*sift-dir* sciezka do katalogu, w ktorym sa katalogi train i validate
+*sift-dir* sciezka do katalogu, w którym zostanie utworzona struktura train/, validate/ i poszczególne klasy oraz zapisane będą sifty.
 
 Dane wejsciowe i wyjsciowe
 --------------------------
 
-Danymi wejsciowymi sa klasy obrazkow umieszczone w katalogach jak wyzej. Po uruchomieniu programu otrzymamy pliki z SIFTami dla poszczegolnych obrazkow z train i validate zapisanymi w sift-dir/*train_lub_validate*/nazwa_klasy/ w formacie .json
+Danymi wejsciowymi sa klasy obrazkow umieszczone w katalogach jak wyzej. Po uruchomieniu programu otrzymamy pliki z SIFTami dla poszczegolnych klas z train i validate zapisanymi w sift-dir/*train_lub_validate*/nazwa_klasy/ w formacie .pickle (jako słownik, gdzie kluczem są ścieżki zdjęć, a wartością policzone sifty).
 
 Przykladowe uzycie (na zbiorze cats_dogs)
 -----------------------------------------
