@@ -7,22 +7,25 @@ import json
 from json_tricks import dump, dumps, load, loads, strip_comments
 import glob, os
 import pickle
+from sklearn import decomposition
+from sklearn import datasets
 
 def ParseArguments():
     parser = argparse.ArgumentParser(description="Project ")
     parser.add_argument('--data-dir', default="", required=True, help='data dir')
     parser.add_argument('--fraction', default="0.1", required=False, help='fraction of files to consider')
     parser.add_argument('--sifts-file', default="", required=True, help='save all sifts in this file')
+    parser.add_argument('--pca-d', default="0", required=False, help='target dimension of pca')
 
 # 28.11.2018: Pawel Lorek: dodalem opcje "--fraction"
 
     args = parser.parse_args()
 
-    return args.data_dir, args.sifts_file, args.fraction
+    return args.data_dir, args.sifts_file, args.fraction, args.pca_d
 
 
 # main progam
-data_dir, sifts_file, fraction  =  ParseArguments()
+data_dir, sifts_file, fraction, pca_d  =  ParseArguments()
 
 print("data-dir = ", data_dir)
  
@@ -33,8 +36,8 @@ classes=[]
 
 for file in glob.glob(data_dir+"/train/**"):
         #P. Lorek: UWAGA: byc moze pod Windowsem trzeba ponizsza linie zamienic na:
-        #tmp=file.split('\\')
-        tmp=file.split('/')
+        tmp=file.split('\\')
+        #tmp=file.split('/')
         print(tmp)
         classes.append(tmp[len(tmp)-1])
 
@@ -76,12 +79,37 @@ for classs in classes:
 print(sifts_all.shape)
 print("W sumie mamy SIFTow : ", sifts_all.shape[0])
 
-if(sifts_file.endswith(".pickle")):
-    print("Using pickle instead of json tricks")
-    with open(sifts_file, 'wb') as outfile:
-        pickle.dump(sifts_all, outfile)
-else:
-    with open(sifts_file, 'w') as outfile:
-        json.dump(dumps(sifts_all),outfile)
+if(int(pca_d)!=0):
+	print(pca_d)
+	pca = decomposition.PCA(n_components=int(pca_d))
+	pca.fit(sifts_all)
+	sifts_all = pca.transform(sifts_all)
+	
+	#Zapisujemy macierz przekształcenia PCA w features
+	pca_matrix=pca.transform(np.identity(128))
+	sift_dir=data_dir.replace("datasets","features")+"/sifts"
+	
+	np.save(sift_dir+"/pca_matrix"+pca_d, pca_matrix)
+	
+	print(sifts_all.shape)
+	
+	if(sifts_file.endswith(".pickle")):
+		print("Using pickle instead of json tricks")
+		with open(sifts_file, 'wb') as outfile:
+			pickle.dump(sifts_all, outfile)
+	else:
+		with open(sifts_file, 'w') as outfile:
+			json.dump(dumps(sifts_all),outfile)
+	print("pca_done")
 
-print("koniec")
+else:		
+
+	if(sifts_file.endswith(".pickle")):
+		print("Using pickle instead of json tricks")
+		with open(sifts_file, 'wb') as outfile:
+			pickle.dump(sifts_all, outfile)
+	else:
+		with open(sifts_file, 'w') as outfile:
+			json.dump(dumps(sifts_all),outfile)
+
+print("all_done")
