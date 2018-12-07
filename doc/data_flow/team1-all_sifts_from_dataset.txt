@@ -5,20 +5,21 @@ Jak uruchomic?
 --------------
 
 python scripts/team1/all_sifts.py --data-dir *zbior_danych* --sifts-file *nazwa_pliku_wyjsciowego*
-
+--pca-d *liczba*
 *zbior_danych* - sciezka do katalogu ze zbiorem danych, zakladamy ze zbior podzielony jest na katalogi train i validate, a w kazdym z nich sa katalogi ktorych nazwami sa klasy obrazkow
 
 *nazwa_pliku_wyjsciowego* sciezka do katalogu, do ktorego zostanie zapisany plik wyjsciowy
 
+*liczba wymiarow do ktorej redukujemy 128 wymiarowe SIFTy
 Dane wejsciowe i wyjsciowe
 --------------------------
 
-Danymi wejsciowymi sa klasy obrazkow umieszczone w katalogach jak wyzej. Po uruchomieniu programu otrzymamy plik z SIFTami dla wszystkich obrazkow z train i validate zapisanymi w formacie .json
+Danymi wejsciowymi sa klasy obrazkow umieszczone w katalogach jak wyzej. Po uruchomieniu programu otrzymamy plik z SIFTami dla wszystkich obrazkow z train i validate zapisanymi w formacie .json oraz macierz przeksztalcenia PCA w katalogu sifts
 
 Przykladowe uzycie (na zbiorze cats_dogs)
 -----------------------------------------
 
-python scripts/team1/all_sifts_from_dataset.py --data-dir datasets/cats_dogs/ --sifts-file /features/cats_dogs/sifts/cats_dogs_sifts_all.json
+python scripts/team1/all_sifts_from_dataset.py --data-dir datasets/cats_dogs/ --sifts-file /features/cats_dogs/sifts/cats_dogs_sifts_all.json --pca-d 17
 
 Wazna uwaga
 -----------
