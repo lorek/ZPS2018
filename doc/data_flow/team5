@@ -1,0 +1,38 @@
+KLASYFIKACJA HISTOGRAMÓW
+========================
+
+scripts/team5/train_classifier.py
+
+Parametry
+---------
+
+--dataset
+    Nazwa zestawu danych
+--data-dir
+    Folder z plikami BoW
+--result-dir
+    Ścieżka, do której zrzucamy wyuczony klasyfikator
+--type : {decision-tree | random-forest}
+    Typ klasyfikatora
+
+
+Wejście
+-------
+
+Na wejściu podajemy ścieżkę do folderu z histogramami w formacie Bag of Words i żądany typ klasyfikatora. Zakładamy, że folder ma dwa podfoldery /train i /validate, w których znajdują się pliki postaci <nazwa_klasy>.pickle utworzone przez skrypt scripts/dlalinuxa.py lub scripts/dlawindowsa.py.
+
+Wyjście
+-------
+
+Po uruchomieniu otrzymamy klasyfikator wybranego typu w formacie pickle, nauczony na unormowanych danych z podkatalogu /train podanej ścieżki. Klasy w klasyfikatorze to nazwy plików w podfolderze bez '.pickle'.
+Klasyfikator będzie nazywał się '<nazwa zestawu>_<typ klasyfikatora>_classifier.pickle'.
+
+Przykład
+--------
+
+python scripts/team5/train_classifier.py --dataset cats_dogs --data-dir BoW/cats_dogs/ --result-dir classifiers/ --type random-forest
+
+UWAGA
+=====
+
+Linux, Windows i stringi ze ścieżkami plików bardzo się nie lubią. Jako prowizoryczne rozwiązanie odpalamy skrypt Z GŁÓWNEGO KATALOGU (tj. ZPS2018).
