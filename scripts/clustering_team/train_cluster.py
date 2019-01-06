@@ -10,6 +10,7 @@ import sys
 import argparse
 import glob, os
 import pickle
+from sklearn.mixture import GaussianMixture
 
 ALLOWED_ALGOS = ["kmeans"]
 SUBSETS = ["train", "validate"]
