@@ -12,7 +12,7 @@ import glob, os
 import pickle
 from sklearn.mixture import GaussianMixture
 
-ALLOWED_ALGOS = ["kmeans"]
+ALLOWED_ALGOS = ["kmeans", "GMM"]
 SUBSETS = ["train", "validate"]
 INFI = 2000000000
 
