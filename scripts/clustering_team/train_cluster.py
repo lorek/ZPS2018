@@ -5,14 +5,14 @@
 
 import cv2
 import numpy as np
-from scipy.cluster.vq import kmeans, whiten
+from sklearn.cluster import KMeans
+from sklearn.mixture import GaussianMixture
 import sys
 import argparse
 import glob, os
 import pickle
-from sklearn.mixture import GaussianMixture
 
-ALLOWED_ALGOS = ["kmeans", "GMM"]
+ALLOWED_ALGOS = ["Kmeans","GaussianMixture"]
 SUBSETS = ["train", "validate"]
 INFI = 2000000000
 
@@ -53,22 +53,6 @@ def load_class_features(class_path):
 
     return feats_per_utt
 
-def dist(x, y):
-    return sum((x-y) ** 2)
-
-def find_class(feat, cluster, knn):
-    knn = 0 # TODO
-
-    if(knn == 0):
-        best_center = -1
-        best_dist = INFI
-        for c in range(0, cluster[0].shape[0]):
-            new_dist = dist(cluster[0][c], feat)
-            if new_dist < best_dist:
-                best_dist = new_dist
-                best_center = c
-
-    return best_center
 
 """
     Main part
@@ -99,20 +83,24 @@ feats_file.close()
 cluster = None
 params_str = ""
 
-if algorithm == "kmeans":
-    whitened_feats = whiten(all_feats) # numpy's k-means requires it
-    cluster = kmeans(whitened_feats, k_par)
+if algorithm == "Kmeans":
+    object = KMeans(k_par) # numpy's k-means requires it
+    object.fit(all_feats)
+    params_str += str(k_par)
+	
+if algorithm == "GaussianMixture":
+    object = GaussianMixture(k_par) # numpy's gmm's requires it
+    object.fit(all_feats)
     params_str += str(k_par)
 
-if cluster is not None:
-    cluster_path = "dict/" + "/".join(feats_dir.split("/")[1:3]) + "/" + algorithm + params_str + "/"
 
-    if not os.path.exists(cluster_path):
-        os.makedirs(cluster_path)
+cluster_path = "dict/" + "/".join(feats_dir.split("/")[1:3]) + "/" + algorithm + params_str + "/"
+	
+	
 
-    out_file = open(cluster_path + "cluster.pickle", 'wb')
-    pickle.dump(cluster, out_file)
-    out_file.close()
+if not os.path.exists(cluster_path):
+       os.makedirs(cluster_path)
+
 
 # Load features per utterance (image)
 
@@ -135,7 +123,7 @@ for subs in SUBSETS:
             hist = [0] * k_par
 
             for feat in feats_per_utt[utt]:
-                hist[find_class(feat, cluster, knn)] += 1
+                hist[object.predict([feat])] += 1
 
             for i in range(k_par):
                 out_clustered.write(str(hist[i]) + '\n')
