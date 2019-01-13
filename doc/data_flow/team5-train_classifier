@@ -1,0 +1,42 @@
+KLASYFIKACJA HISTOGRAMÓW
+========================
+
+scripts/team5/train_classifier.py
+
+Parametry
+---------
+
+--dataset
+    Nazwa zestawu danych
+--data-dir
+    Folder z plikami BoW
+--result-dir
+    Ścieżka, do której zrzucamy wyuczony klasyfikator
+--classifier-type : {decision-tree | random-forest}
+    Typ klasyfikatora
+--use-tfidf : {T | F}
+    Czy użyć TF-IDF zamiast histogramów przy uczeniu (domyślnie F)
+
+
+Wejście
+-------
+
+Na wejściu podajemy ścieżkę do folderu z histogramami w formacie Bag of Words i żądany typ klasyfikatora. Zakładamy, że folder ma dwa podfoldery /train i /validate, w których znajdują się pliki postaci <nazwa_klasy>.pickle utworzone przez skrypt scripts/dlalinuxa.py lub scripts/dlawindowsa.py.
+Opcjonalna flaga, czy chcemy użyć TF-IDF przy uczeniu klasyfikatora (będzie to zaznaczone w nazwie pikla z klasyfikatorem).
+
+Wyjście
+-------
+
+Po uruchomieniu otrzymamy klasyfikator wybranego typu w formacie pickle, nauczony na unormowanych danych (lub TF-IDF) z podkatalogu /train podanej ścieżki i zrzucony do katalogu result-dir/<dataset>.
+Klasy w klasyfikatorze to nazwy plików z data-dir (oczywiście bez rozszerzenia .pickle).
+Klasyfikator będzie nazywał się '<dataset>_<classifier-type>[_tfidf].pickle'.
+
+Przykład
+--------
+
+python scripts/team5/train_classifier.py --dataset cats_dogs --data-dir BoW/cats_dogs/ --result-dir classifiers/ --classifier-type random-forest --use-tfidf F
+
+UWAGA
+=====
+
+Linux, Windows i stringi ze ścieżkami plików bardzo się nie lubią. Jako prowizoryczne rozwiązanie odpalamy skrypt Z GŁÓWNEGO KATALOGU (tj. ZPS2018).
