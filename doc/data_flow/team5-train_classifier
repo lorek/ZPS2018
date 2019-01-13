@@ -21,7 +21,7 @@ Parametry
 Wejście
 -------
 
-Na wejściu podajemy ścieżkę do folderu z histogramami w formacie Bag of Words i żądany typ klasyfikatora. Zakładamy, że folder ma dwa podfoldery /train i /validate, w których znajdują się pliki postaci <nazwa_klasy>.pickle utworzone przez skrypt scripts/dlalinuxa.py lub scripts/dlawindowsa.py.
+Na wejściu podajemy ścieżkę do folderu z histogramami w formacie Bag of Words i żądany typ klasyfikatora. Zakładamy, że folder ma podfolder <dataset>, a w nim dwa podfoldery /train i /validate, w których znajdują się pliki postaci <nazwa_klasy>.pickle utworzone przez skrypt scripts/dlalinuxa.py lub scripts/dlawindowsa.py.
 Opcjonalna flaga, czy chcemy użyć TF-IDF przy uczeniu klasyfikatora (będzie to zaznaczone w nazwie pikla z klasyfikatorem).
 
 Wyjście
@@ -34,7 +34,7 @@ Klasyfikator będzie nazywał się '<dataset>_<classifier-type>[_tfidf].pickle'.
 Przykład
 --------
 
-python scripts/team5/train_classifier.py --dataset cats_dogs --data-dir BoW/cats_dogs/ --result-dir classifiers/ --classifier-type random-forest --use-tfidf F
+python scripts/team5/train_classifier.py --dataset cats_dogs --data-dir BoW/ --result-dir classifiers/ --classifier-type random-forest --use-tfidf F
 
 UWAGA
 =====
