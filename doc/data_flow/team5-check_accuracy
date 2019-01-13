@@ -21,7 +21,7 @@ Parametry
 Wejście
 -------
 
-Na wejściu podajemy ścieżkę do danych (ta sama co --data-dir ze skryptu team5/train_classifier.py, tym razem przeszukujemy pikle z podfolderu /validate). Następnie podajemy ścieżkę do klasyfikatora (standardowo result-dir/<dataset> ze skryptu team5/train_classifier.py), typ użytego klasyfikatora i, opcjonalnie, czy był uczony na TF-IDF zamiast histogramów.
+Na wejściu podajemy ścieżkę do danych (ta sama co --data-dir ze skryptu team5/train_classifier.py, tym razem przeszukujemy pikle z podfolderu <dataset>/validate). Następnie podajemy ścieżkę do klasyfikatora (standardowo result-dir/<dataset> ze skryptu team5/train_classifier.py), typ użytego klasyfikatora i, opcjonalnie, czy był uczony na TF-IDF zamiast histogramów.
 
 Wyjście
 -------
@@ -31,4 +31,4 @@ Skrypt zwraca celność klasyfikatora (od 0 do 1) na każdej klasie z osobna, a 
 Przykład
 --------
 
-python .\scripts\check_accuracy.py --dataset food --data-dir BoW/food/ --classifier-dir classifiers/food/ --classifier-type random-forest --use-tfidf F
+python .\scripts\check_accuracy.py --dataset food --data-dir BoW/ --classifier-dir classifiers/ --classifier-type random-forest --use-tfidf F
