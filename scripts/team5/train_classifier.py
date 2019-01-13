@@ -23,7 +23,8 @@ def ParseArguments():
                         default="",
                         required=True,
                         help='Output classifier directory')
-    parser.add_argument('--classifier-type', default="",
+    parser.add_argument('--classifier-type',
+                        default="",
                         required=True,
                         help='Classifier type (decision-tree / random-forest)')
     parser.add_argument('--use-tfidf',
@@ -87,8 +88,8 @@ elif classifier_type == 'random-forest':
 if not os.path.exists(result_dir):
     os.makedirs(result_dir)
     
-if tf_idf == 'F':
+if use_tfidf == 'F':
     out_file = open(result_dir + dataset + '_' + classifier_type + '.pickle', 'wb')
 else:
-    out_file = open(result_dir + dataset + '_' + classifier_type + 'tf_idf.pickle', 'wb')
+    out_file = open(result_dir + dataset + '_' + classifier_type + '_tfidf.pickle', 'wb')
 pickle.dump(classifier, out_file)
