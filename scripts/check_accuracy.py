@@ -41,16 +41,20 @@ def ParseArguments():
 
 dataset, data_dir, classifier_dir, classifier_type, use_tfidf = ParseArguments()
 
-#Set classifier path and name
+# Append set name to data directory
 
-full_path = classifier_dir + dataset + '_' + classifier_type
+data_dir = data_dir + dataset + '/'
+
+# Set classifier path and name
+
+full_path = classifier_dir + dataset + '/' + dataset + '_' + classifier_type
 
 if use_tfidf == 'T':
     full_path += '_tfidf'
 
 full_path += '.pickle'
 
-#Load and check
+# Load and check
 
 in_obj = open(full_path, 'rb')
 my_classifier = pickle.load(in_obj)
