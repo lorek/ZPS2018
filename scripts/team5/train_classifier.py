@@ -41,6 +41,11 @@ def ParseArguments():
 """
 
 dataset, data_dir, result_dir, classifier_type, use_tfidf = ParseArguments()
+
+# Append set name to data directory
+
+data_dir = data_dir + dataset + '/'
+
 # Create list of classes
 
 classes = []
@@ -53,6 +58,8 @@ for file in glob.glob(data_dir+"/train/**"):
         classes.append(tmp[len(tmp)-1][:-7])
 
 print("Klasy  = ", classes)
+
+# Create a list of histograms/tf-idfs
 
 dictionaries = []
 labels = []
@@ -89,7 +96,7 @@ if not os.path.exists(result_dir):
     os.makedirs(result_dir)
     
 if use_tfidf == 'F':
-    out_file = open(result_dir + dataset + '_' + classifier_type + '.pickle', 'wb')
+    out_file = open(result_dir + dataset + '/' + dataset + '_' + classifier_type + '.pickle', 'wb')
 else:
-    out_file = open(result_dir + dataset + '_' + classifier_type + '_tfidf.pickle', 'wb')
+    out_file = open(result_dir + dataset + '/' + dataset + '_' + classifier_type + '_tfidf.pickle', 'wb')
 pickle.dump(classifier, out_file)
