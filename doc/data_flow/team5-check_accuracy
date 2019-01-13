@@ -1,0 +1,34 @@
+SZYBKIE SPRAWDZENIE CELNOŚCI
+============================
+
+scripts/check_accuracy.py
+
+Parametry
+---------
+
+--dataset
+    Nazwa zestawu danych
+--data-dir
+    Folder z histogramami/tf-idf do przetestowania
+--classifier-dir
+    Ścieżka, do której zrzuciliśmy wyuczony klasyfikator
+--classifier-type : {decision-tree | random-forest}
+    Typ klasyfikatora
+--use-tfidf : {T | F}
+    Czy użyto TF-IDF zamiast histogramów przy uczeniu (domyślnie F)
+
+
+Wejście
+-------
+
+Na wejściu podajemy ścieżkę do danych (ta sama co --data-dir ze skryptu team5/train_classifier.py, tym razem przeszukujemy pikle z podfolderu /validate). Następnie podajemy ścieżkę do klasyfikatora (standardowo result-dir/<dataset> ze skryptu team5/train_classifier.py), typ użytego klasyfikatora i, opcjonalnie, czy był uczony na TF-IDF zamiast histogramów.
+
+Wyjście
+-------
+
+Skrypt zwraca celność klasyfikatora (od 0 do 1) na każdej klasie z osobna, a następnie na wszystkich klasach z <data-dir>/validate.
+
+Przykład
+--------
+
+python .\scripts\check_accuracy.py --dataset food --data-dir BoW/food/ --classifier-dir classifiers/food/ --classifier-type random-forest --use-tfidf F
