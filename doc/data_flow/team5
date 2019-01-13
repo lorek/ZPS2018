@@ -12,8 +12,10 @@ Parametry
     Folder z plikami BoW
 --result-dir
     Ścieżka, do której zrzucamy wyuczony klasyfikator
---type : {decision-tree | random-forest}
+--classifier-type : {decision-tree | random-forest}
     Typ klasyfikatora
+--use-tfidf : {T | F}
+    Czy użyć TF-IDF zamiast histogramów przy uczeniu (domyślnie F)
 
 
 Wejście
@@ -30,7 +32,7 @@ Klasyfikator będzie nazywał się '<nazwa zestawu>_<typ klasyfikatora>_classifi
 Przykład
 --------
 
-python scripts/team5/train_classifier.py --dataset cats_dogs --data-dir BoW/cats_dogs/ --result-dir classifiers/ --type random-forest
+python scripts/team5/train_classifier.py --dataset cats_dogs --data-dir BoW/cats_dogs/ --result-dir classifiers/ --classifier-type random-forest --use-tfidf F
 
 UWAGA
 =====
