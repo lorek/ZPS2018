@@ -15,9 +15,7 @@ workflow:
    --result-dir 'C:\\Users\\cineq\\repos\\ZPS2018\\BoW\\<nazwa_zestawu>\\kmeans<liczba_klastrów>\\knn<parametr_knn>'
    [przykład dla Windowsa, tu trzeba użyć SWOJEJ ścieżki bezwzględnej]
 
-5. scripts/team5/train_classifier.py --data-dir BoW/<nazwa_zestawu>/
-   --k <liczba_klastrów> --knn <parametr_knn> --classifier-type <typ_klasyfikatora>
-   --result-dir classifiers/<nazwa_zestawu>
+5. scripts/team5/train_classifier.py --dataset <nazwa_zestawu> --data-dir BoW/ --result-dir classifiers/ --classifier-type <typ_klasyfikatora> --use-tfidf <T|F>
 
 To do:
 Œci¹gn¹æ skrypty w jeden plik/notatnik sparametryzowany nastêpuj¹co:
