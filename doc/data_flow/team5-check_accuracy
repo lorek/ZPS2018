@@ -31,4 +31,4 @@ Skrypt zwraca celność klasyfikatora (od 0 do 1) na każdej klasie z osobna, a 
 Przykład
 --------
 
-python .\scripts\check_accuracy.py --dataset food --data-dir BoW/ --classifier-dir classifiers/ --classifier-type random-forest --use-tfidf F
+python .\scripts\check_accuracy.py --dataset flowers --data-dir BoW/flowers/sifts/kmeans50/hist_normalized/ --classifier-dir classifiers/kmeans50/ --classifier-type random-forest --use-tfidf F

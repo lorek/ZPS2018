@@ -34,7 +34,7 @@ Klasyfikator będzie nazywał się '<dataset>_<classifier-type>[_tfidf].pickle'.
 Przykład
 --------
 
-python scripts/team5/train_classifier.py --dataset cats_dogs --data-dir BoW/ --result-dir classifiers/ --classifier-type random-forest --use-tfidf F
+python scripts/team5/train_classifier.py --dataset flowers --data-dir BoW/flowers/sifts/kmeans50/hist_normalized/ --result-dir classifiers/kmeans50/ --classifier-type random-forest --use-tfidf F
 
 UWAGA
 =====
