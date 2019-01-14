@@ -14,14 +14,12 @@ import pickle
 
 ALLOWED_ALGOS = ["kmeans","gmm"]
 SUBSETS = ["train", "validate"]
-INFI = 2000000000
 
 def ParseArguments():
     parser = argparse.ArgumentParser(description="Project ")
     parser.add_argument('--features-dir',
-                            default = "features/cats_dogs/sifts/",
-                            required = False,
-                            help = 'data set directory name (features/cats_dogs/sifts/)')
+                            required = True,
+                            help = 'data set directory name (e.g. features/cats_dogs/sifts/)')
     parser.add_argument('--pca-d',
                             default = 0,
                             required = False,
@@ -79,11 +77,13 @@ if algorithm not in ALLOWED_ALGOS:
 
 # Load all features
 
+print("Loading all-sifts file...")
+
 try:
-    pca_d_str = ""
     if pca_d > 0:
-        pca_d_str = str(pca_d)
-    feats_path = feats_dir + "sifts_all_" + pca_d_str + ".pickle"
+        feats_path = feats_dir + "sifts_all_" + str(pca_d) + ".pickle"
+    else:
+        feats_path = feats_dir + "sifts_all.pickle"
     feats_file = open(feats_path, "rb")
 except:
     print("Couldn't open features file: {}.".format(feats_path))
@@ -92,25 +92,33 @@ except:
 all_feats = pickle.load(feats_file)
 feats_file.close()
 
+print("all-sifts file loaded!")
+
 # Train and save cluster
 
 cluster = None
 params_str = ""
 
+print("Training cluster...")
+
 if algorithm == "kmeans":
     cluster = KMeans(k_par) # numpy's k-means requires it
     cluster.fit(all_feats)
     params_str += str(k_par)
-	
+
 if algorithm == "gmm":
     cluster = GaussianMixture(k_par) # numpy's gmm's requires it
     cluster.fit(all_feats)
     params_str += str(k_par)
 
+print("Cluster trained!")
+
 cluster_path = "dict/" + "/".join(feats_dir.split("/")[1:3]) + "/" + algorithm + params_str + "/"
 
 if not os.path.exists(cluster_path):
        os.makedirs(cluster_path)
+
+print("Doing per-class clustering")
 
 # Load features per utterance (image)
 
@@ -118,12 +126,14 @@ for subs in SUBSETS:
     all_classess = glob.glob(feats_dir + "/" + subs + "/*")
 
     for class_path in all_classess:
+        print("Processing {}".format(class_path))
         feats_per_utt = load_class_features(class_path)
 
         for utt in feats_per_utt.keys():
             utt_splt = list(filter(None, utt.replace("\\", "/").split("/"))) # remove empty strings (coz of ///// in paths)
             no_ext = ".".join(utt_splt[-1].split(".")[:-1])
-            utt_path = cluster_path + "/knn" + str(knn) + "/" + "/".join(utt_splt[2:-1]) + "/"
+            where_is_datasets = utt_splt.index("datasets")
+            utt_path = cluster_path + "/knn" + str(knn) + "/" + "/".join(utt_splt[where_is_datasets + 2:-1]) + "/"
 
             if not os.path.exists(utt_path):
                 os.makedirs(utt_path)
@@ -139,3 +149,5 @@ for subs in SUBSETS:
                 out_clustered.write(str(hist[i]) + '\n')
 
             out_clustered.close()
+
+print("It has been done, good bye!")
