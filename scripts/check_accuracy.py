@@ -43,11 +43,11 @@ dataset, data_dir, classifier_dir, classifier_type, use_tfidf = ParseArguments()
 
 # Append set name to data directory
 
-data_dir = data_dir + dataset + '/'
+#data_dir = data_dir + dataset + '/'
 
 # Set classifier path and name
 
-full_path = classifier_dir + dataset + '/' + dataset + '_' + classifier_type
+full_path = classifier_dir + dataset + '_' + classifier_type
 
 if use_tfidf == 'T':
     full_path += '_tfidf'
