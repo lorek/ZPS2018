@@ -99,7 +99,9 @@ for classs in classes:
         zeros = np.array(zeros)
         N = [A.shape[1]]*A.shape[0] # lista dlugosci ilosci siftow o wartosciach rownych ilosci plikow
         N = np.array(N) # ilosc plikow razy ilosc siftow 
-        idf = np.log(N/(N-zeros))
+        idf = np.log(N/(N-zeros)) + 1
+        #idf = np.log((1+N)/(1+(N-zeros)))
+        #idf = np.log(N/(1+(N-zeros)))
         tf_idf = np.zeros((A.shape[0],A.shape[1]))
         for i in range(A.shape[0]):
             tf_idf[i,:] = A[i][:]*idf[i]
