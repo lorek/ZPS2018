@@ -2,26 +2,27 @@ workflow:
 
 1. scripts/team1/all_sifts_from_dataset.py --data-dir datasets/<nazwa_zestawu>/
    --sifts-file features/<nazwa_zestawu>/sifts/<nazwa_zestawu>_sifts_all.pickle
-   --pca-d <liczba_wymiar體>
+   --pca-d <liczba_wymiar贸w>
 
 2. scripts/team1/sift1obrazek.py --data-dir datasets/<nazwa_zestawu>/
    --sift-dir features/<nazwa_zestawu>/sifts/
-   --pca-d <liczba_wymiar體>
+   --pca-d <liczba_wymiar贸w>
 
 3. scripts/clustering_team/train_cluster.py --features-dir features/<nazwa_zestawu>/sifts/
-   --algorithm kmeans --k <liczba_klastr體> --knn <parametr_knn>
+   --algorithm kmeans --k <liczba_klastr贸w> --knn <parametr_knn>
 
-4. scripts/dlawindowsa.py --data-dir 'C:\\Users\cineq\\repos\\ZPS2018\\dict\\<nazwa_zestawu>\\sifts\\kmeans<liczba_klastr體\\knn<parametr_knn>'
-   --result-dir 'C:\\Users\\cineq\\repos\\ZPS2018\\BoW\\<nazwa_zestawu>\\kmeans<liczba_klastr體>\\knn<parametr_knn>'
+4. scripts/dlawindowsa.py --data-dir 'C:\\Users\cineq\\repos\\ZPS2018\\dict\\<nazwa_zestawu>\\sifts\\kmeans<liczba_klastr贸w\\knn<parametr_knn>'
+   --result-dir 'C:\\Users\\cineq\\repos\\ZPS2018\\BoW\\<nazwa_zestawu>\\kmeans<liczba_klastr贸w>\\knn<parametr_knn>'
+   [przyk艂ad dla Windowsa, tu trzeba u偶y膰 艣cie偶ki bezwzgl臋dnej]
 
 5. scripts/team5/train_classifier.py --data-dir BoW/<nazwa_zestawu>/
-   --k <liczba_klastr體> --knn <parametr_knn> --classifier-type <typ_klasyfikatora>
+   --k <liczba_klastr贸w> --knn <parametr_knn> --classifier-type <typ_klasyfikatora>
    --result-dir classifiers/<nazwa_zestawu>
 
 To do:
-宑i筭n规 skrypty w jeden plik/notatnik sparametryzowany nast阷uj筩o:
+艗ci鹿gn鹿忙 skrypty w jeden plik/notatnik sparametryzowany nast锚puj鹿co:
 <nazwa zestawu>
-<liczba wymiar體 pca>
-<liczba klastr體 k-means>
+<liczba wymiar贸w pca>
+<liczba klastr贸w k-means>
 <parametr knn>
 <typ klasyfikatora>
