@@ -44,7 +44,7 @@ dataset, data_dir, result_dir, classifier_type, use_tfidf = ParseArguments()
 
 # Append set name to data directory
 
-data_dir = data_dir + dataset + '/'
+#data_dir = data_dir + dataset + '/'
 
 # Create list of classes
 
@@ -92,8 +92,8 @@ elif classifier_type == 'random-forest':
     classifier = RandomForestClassifier()
     classifier.fit(training_matrix, labels)
 
-if not os.path.exists(result_dir):
-    os.makedirs(result_dir)
+if not os.path.exists(result_dir + dataset + '/'):
+    os.makedirs(result_dir + dataset + '/')
     
 if use_tfidf == 'F':
     out_file = open(result_dir + dataset + '/' + dataset + '_' + classifier_type + '.pickle', 'wb')
