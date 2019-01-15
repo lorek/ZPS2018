@@ -12,7 +12,7 @@ Parametry
     Folder z histogramami/tf-idf do przetestowania
 --classifier-dir
     Ścieżka, do której zrzuciliśmy wyuczony klasyfikator
---classifier-type : {decision-tree | random-forest}
+--classifier-type : {decision-tree | random-forest | mlp}
     Typ klasyfikatora
 --use-tfidf : {T | F}
     Czy użyto TF-IDF zamiast histogramów przy uczeniu (domyślnie F)
