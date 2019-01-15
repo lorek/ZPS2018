@@ -7,6 +7,8 @@ import argparse
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_extraction import DictVectorizer
+from sklearn.neural_network import MLPClassifier
+
 
 def ParseArguments():
     parser = argparse.ArgumentParser(description="Project ")
@@ -90,6 +92,12 @@ elif classifier_type == 'random-forest':
     print('Random forest classifier chosen')
     
     classifier = RandomForestClassifier()
+    classifier.fit(training_matrix, labels)
+
+elif classifier_type == 'MLP':
+    print('MLP classifier chosen')
+    
+    classifier = MLPClassifier(solver='sgd')
     classifier.fit(training_matrix, labels)
 
 if not os.path.exists(result_dir + dataset + '/'):
