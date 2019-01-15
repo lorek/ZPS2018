@@ -28,7 +28,7 @@ def ParseArguments():
     parser.add_argument('--classifier-type',
                         default="",
                         required=True,
-                        help='Classifier type (decision-tree / random-forest)')
+                        help='Classifier type (decision-tree / random-forest / mlp)')
     parser.add_argument('--use-tfidf',
                         default='F',
                         required=False,
@@ -94,7 +94,7 @@ elif classifier_type == 'random-forest':
     classifier = RandomForestClassifier()
     classifier.fit(training_matrix, labels)
 
-elif classifier_type == 'MLP':
+elif classifier_type == 'mlp':
     print('MLP classifier chosen')
     
     classifier = MLPClassifier(solver='sgd')
