@@ -9,13 +9,19 @@ def ParseArguments():
     parser = argparse.ArgumentParser(description="Project ")
     parser.add_argument('--data-dir', default="", required=True, help='data dir')
     parser.add_argument('--sift-dir', default="", required=True, help='sift dir')
-    parser.add_argument('--pca-d', default="0", required=False, help='target dimension of pca') 
+    parser.add_argument('--pca-d', default="0", required=False, help='target dimension of pca')
     args = parser.parse_args()
 
     return args.data_dir, args.sift_dir, args.pca_d
 
 # main progam
 data_dir,sift_dir,pca_d =  ParseArguments()
+
+# [MSi] read fitted pca object
+if(int(pca_d) != 0):
+    pca_file = open(sift_dir + 'pca_obj' + pca_d + '.pickle', 'rb')
+    pca = pickle.load(pca_file)
+    pca_file.close()
 
 print("data-dir = ", data_dir)
 
@@ -50,12 +56,14 @@ for classs in classes:
     for file in list((glob.glob(data_dir+"/train/"+classs+"/**"))):
         img = cv2.imread(file)
         sift = cv2.xfeatures2d.SIFT_create()
-        gray= cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+        gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
         kp, sifts =  sift.detectAndCompute(gray,None)
         sifts_per_utt[file] = sifts
         print("klasa = ", classs, ", obrazek = ",file, ", SIFTow: ", sifts.shape[0])
+        # [MSi] transform with loaded pca
         if(int(pca_d)!=0):
-            sifts_per_utt[file]=np.dot(sifts_per_utt[file],pca_matrix)
+            sifts_per_utt[file] = pca.transform(sifts_per_utt[file])
+            #sifts_per_utt[file]=np.dot(sifts_per_utt[file],pca_matrix)
            
 
 
@@ -75,8 +83,10 @@ for classs in classes:
         kp, sifts =  sift.detectAndCompute(gray,None)
         sifts_per_utt[file] = sifts
         print("klasa = ", classs, ", obrazek = ",file, ", SIFTow: ", sifts.shape[0])
+        # [MSi] transform with loaded pca
         if(int(pca_d)!=0):
-            sifts_per_utt[file]=np.dot(sifts_per_utt[file],pca_matrix)
+            sifts_per_utt[file] = pca.transform(sifts_per_utt[file])
+            #sifts_per_utt[file]=np.dot(sifts_per_utt[file],pca_matrix)
             
 
 
