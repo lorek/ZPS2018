@@ -1,24 +1,23 @@
 workflow:
 
 1. scripts/team1/all_sifts_from_dataset.py --data-dir datasets/<nazwa_zestawu>/
-   --sifts-file features/<nazwa_zestawu>/sifts/<nazwa_zestawu>_sifts_all.pickle
+   --sifts-file features/<nazwa_zestawu>/sifts/sifts_all.pickle
    --pca-d <liczba_wymiarów>
 
 2. scripts/team1/sift1obrazek.py --data-dir datasets/<nazwa_zestawu>/
-   --sift-dir features/<nazwa_zestawu>/sifts/
-   --pca-d <liczba_wymiarów>
+   --sift-dir features/<nazwa_zestawu>/sifts/ --pca-d <liczba_wymiarów>
 
 3. scripts/clustering_team/train_cluster.py --features-dir features/<nazwa_zestawu>/sifts/
-   --algorithm kmeans --k <liczba_klastrów> --knn <parametr_knn>
+   --algorithm kmeans --k <liczba_klastrów> --knn <parametr_knn> --pca-d <liczba_wymiarów>
 
 4. scripts/dlawindowsa.py --data-dir 'C:\\Users\cineq\\repos\\ZPS2018\\dict\\<nazwa_zestawu>\\sifts\\kmeans<liczba_klastrów\\knn<parametr_knn>'
-   --result-dir 'C:\\Users\\cineq\\repos\\ZPS2018\\BoW\\<nazwa_zestawu>\\kmeans<liczba_klastrów>\\knn<parametr_knn>'
+   --result-dir 'C:\\Users\\JohnDoe\\repos\\ZPS2018\\BoW\\<nazwa_zestawu>\\kmeans<liczba_klastrów>\\knn<parametr_knn>'
    [przykład dla Windowsa, tu trzeba użyć SWOJEJ ścieżki bezwzględnej]
 
 5. scripts/team5/train_classifier.py --dataset <nazwa_zestawu> --data-dir BoW/ --result-dir classifiers/ --classifier-type <typ_klasyfikatora> --use-tfidf <T|F>
 
 To do:
-Œci¹gn¹æ skrypty w jeden plik/notatnik sparametryzowany nastêpuj¹co:
+ściągnąć skrypty w jeden plik/notatnik sparametryzowany następująco:
 <nazwa zestawu>
 <liczba wymiarów pca>
 <liczba klastrów k-means>
