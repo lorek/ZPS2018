@@ -80,27 +80,31 @@ print(sifts_all.shape)
 print("W sumie mamy SIFTow : ", sifts_all.shape[0])
 
 if(int(pca_d)!=0):
-	print(pca_d)
-	pca = decomposition.PCA(n_components=int(pca_d))
-	pca.fit(sifts_all)
-	sifts_all = pca.transform(sifts_all)
-	
-	#Zapisujemy macierz przekształcenia PCA w features
-	pca_matrix=pca.transform(np.identity(128))
-	sift_dir=data_dir.replace("datasets","features")+"/sifts"
-	
-	np.save(sift_dir+"/pca_matrix"+pca_d, pca_matrix)
-	
-	print(sifts_all.shape)
-	
-	if(sifts_file.endswith(".pickle")):
-		print("Using pickle instead of json tricks")
-		with open(sifts_file, 'wb') as outfile:
-			pickle.dump(sifts_all, outfile)
-	else:
-		with open(sifts_file, 'w') as outfile:
-			json.dump(dumps(sifts_all),outfile)
-	print("pca_done")
+    print(pca_d)
+    pca = decomposition.PCA(n_components=int(pca_d))
+    pca.fit(sifts_all)
+    sifts_all = pca.transform(sifts_all)
+    
+    #Zapisujemy macierz przekształcenia PCA w features
+    # [dop. MSi] zły pomysł
+    pca_matrix=pca.transform(np.identity(128))
+    sift_dir=data_dir.replace("datasets","features")+"/sifts"
+    
+    # [MSi] dump dca decomposer instead of transformed identity matrix
+    trained_pca_file = open(sift_dir + "/pca_obj" + pca_d + ".pickle", "wb")
+    pickle.dump(pca, trained_pca_file)
+    #np.save(sift_dir+"/pca_matrix"+pca_d, pca_matrix)
+    
+    print(sifts_all.shape)
+    
+    if(sifts_file.endswith(".pickle")):
+        print("Using pickle instead of json tricks")
+        with open(sifts_file, 'wb') as outfile:
+            pickle.dump(sifts_all, outfile)
+    else:
+        with open(sifts_file, 'w') as outfile:
+            json.dump(dumps(sifts_all),outfile)
+    print("pca_done")
 
 else:		
 
