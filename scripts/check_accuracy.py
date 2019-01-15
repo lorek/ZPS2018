@@ -25,7 +25,7 @@ def ParseArguments():
     parser.add_argument('--classifier-type',
                         default="",
                         required=True,
-                        help="Classifier type (decision-tree / random-forest / svm)")
+                        help="Classifier type (decision-tree / random-forest / svm / mlp)")
     parser.add_argument('--use-tfidf',
                         default='F',
                         required=False,
