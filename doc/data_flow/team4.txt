@@ -1,0 +1,20 @@
+Skrypt NB_SVM_LDA.py zajmuje się uczeniem klasyfikatorów - wymaga na wejściu:
+- nazwy zbioru danych - dataset (np. flowers, food itd)
+- lokalizacji BoW - data_dir (będzie tam szukał katalogu /train, w którym znajdują się pliki w formacie <nazwa_klasy>.pickle wygenerowane za pomocą skryptu grupy 3 (dlalinuxa.py/dlawindowsa.py))
+- miejsca zapisu wyuczonego juz klasyfikatora - result_dir (klasyfikator zostanie zapisany w ścieżce result_dir/classifier_type/)
+- typu klasyfikatora - classifier_type (wspomnianego w opisanym wyżej sposobie zapisu, mamy do wyboru: SVM , LDA oraz NB)
+
+Na wyjściu otrzymamy wyuczony, na danych z folderu train ,klasyfikator o nazwie dataset_classifier_type.pickle.
+
+Przykładowe ścieżki do danych i zapisu można zobaczyć w samym skrypcie ustawione w ParseArguments() jako domyślne :)
+
+
+Drugi skrypt (check_classifiers.py) zajmuje się sprawdzaniem skuteczności klasyfikatorów - potrzebuje na wejściu:
+- nazwy zbioru danych - dataset (np. flowers, food itd)
+- lokalizacji BoW - data_dir (będzie tam szukał katalogu /validate, w którym znajdują się pliki w formacie <nazwa_klasy>.pickle wygenerowane za pomocą skryptu grupy 3 (dlalinuxa.py/dlawindowsa.py))
+- miejsca w którym zapisaliśmy wyuczony klasyfikator - classifier_dir (będzie szukał w ścieżce  classifier_dir/classifier_type/ pod nazwą dataset_classifier_type.pickle czyli wszystko zgodnie ze skryptem NB_SVM_LDA)
+- typu klasyfikatora - classifier_type (ponownie do wyboru: SVM , LDA oraz NB)
+
+Czyli podsumowując chcąc sprawdzić wyuczony klasyfikator podajemy do check_classifiers dokładnie te same dane wejściowe co do NB_SVM_LDA.
+
+Funkcja zwróci nam napis przypominający jaki klasyfikator na jakich danych sprawdzamy, oraz poda jego skuteczność dla każdej klasy z osobna oraz dla wszystkich przekazanych danych razem.

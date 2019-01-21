@@ -21,72 +21,100 @@ def ParseArguments():
                         default="/Users/estera/repos/ZPS2018/BoW/flowers/sifts/kmeans50/hist_normalized/",
                         required=False,
                         help='Bag of Words directory')
-    parser.add_argument('--result-dir',
+    parser.add_argument('--classifier-dir',
                         default="/Users/estera/repos/ZPS2018/classify/flowers/sifts/kmeans50/hist_normalized/",
                         required=False,
-                        help='Output classifier directory')
+                        help='Classifier directory')
     parser.add_argument('--classifier-type',
-                        default="SVM",
+                        default="NB",
                         required=False,
                         help='Classifier type (SVM/LDA/NB)')
 
     args = parser.parse_args()
 
-    return args.dataset, args.data_dir, args.result_dir, args.classifier_type
+    return args.dataset, args.data_dir, args.classifier_dir, args.classifier_type
 
-dataset, data_dir, result_dir, classifier_type = ParseArguments()
+dataset, data_dir, classifier_dir, classifier_type = ParseArguments()
+
+
+obj = open(classifier_dir + classifier_type + "/" + dataset + "_" + classifier_type + '.pickle', 'rb')
+classifier = pickle.load(obj)
 
 classes = []
 
-for file in glob.glob(data_dir + "train/**"):
-    print(file)
+for file in glob.glob(data_dir + "validate/**"):
+    #print(file)
     #tmp = file.split('\\') #windows
     tmp=file.split('/') #linux/mac
-    print(tmp)
+    #print(tmp)
     classes.append(tmp[len(tmp) - 1][:-7])
 
 print("Klasy  = ", classes)
 
 dictionaries = []
 labels = []
+n=[0]
 
 for classs in classes:
-    in_obj = open(data_dir + 'train/' + classs + '.pickle', 'rb')
+    in_obj = open(data_dir + 'validate/' + classs + '.pickle', 'rb')
     in_obj = pickle.load(in_obj)
 
     for i in range(len(in_obj) - 1):
         dictionaries.append(in_obj[i][1])
         labels.append(classs)
 
+    n.append(len(labels))
+
 #print(labels)
 #print(dictionaries)
 #print(len(dictionaries))
 
 v = DictVectorizer()
-training_matrix = v.fit_transform(dictionaries)
+matrix = v.fit_transform(dictionaries)
 
 
 if classifier_type == 'LDA':
-    print('LDA classifier chosen')
+    print('LDA classifier chosen to check on '+ dataset)
 
-    classifier = LinearDiscriminantAnalysis()
-    classifier.fit(training_matrix.todense(), labels)
+    a = classifier.predict(matrix)
 
 elif classifier_type == 'SVM':
-    print('SVM classifier chosen')
+    print('SVM classifier chosen to check on '+ dataset)
 
-    classifier = svm.SVC(gamma='scale')
-    classifier.fit(training_matrix, labels)
+    a = classifier.predict(matrix)
 
 elif classifier_type == 'NB':
-    print('Naive Bayes classifier chosen')
+    print('Naive Bayes classifier chosen to check on '+ dataset)
 
-    classifier = GaussianNB()
-    classifier.fit(training_matrix.todense(), labels)
+    a = classifier.predict(matrix.todense())
 
-if not os.path.exists(result_dir):
-    os.makedirs(result_dir)
+#if not os.path.exists(result_dir):
+#    os.makedirs(result_dir)
 
 
-out_file = open(result_dir +  classifier_type + "/" + dataset + '_' + classifier_type + '.pickle', 'wb')
-pickle.dump(classifier, out_file)
+#v = DictVectorizer()
+#matrix = v.fit_transform(dictionaries)
+#print(matrix)
+
+
+#a = classifier.predict(matrix.todense())
+
+for i in range(len(n)-1):
+    n1=n[i]
+    n2=n[i+1]
+
+    k = (labels[n1:n2] == a[n1:n2]).sum()
+    p = k / (n2-n1)
+    # print(a)
+    print(classes[i])
+    print(p)
+
+
+
+#print(n)
+k=(labels == a).sum()
+p=k/n[len(n)-1]
+#print(a)
+print("Total")
+print(p)
+#print(len(n)==len(classes))

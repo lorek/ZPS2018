@@ -1,0 +1,22 @@
+
+1. Programowi podajemy ścieżkę do folderu, gdzie znajdują się foldery 'train' i 'validate' i ścieżkę w której mają znaleźć się wyniki.
+2. Program działa przy założeniu, że w 'train' i 'validate' znajdują się podfoldery o takich samych nazwach.
+3. Tfidf wytłumaczył Szymuś na zajęciach.
+4. Wyjściowe pliki są w formacie pickle.
+5. Aby odzykać z niego informacje korzystamy z jednej z poniższych opcji:
+import pickle
+with open('F:\\STUDIA\\ZPS\\wyniki\\train\\crayfish.pickle','rb') as f:
+    pikel = pickle.load(f)
+lub
+pickle_in = open('F:\\STUDIA\\ZPS\\wyniki\\validate\\crayfish.pickle','rb')
+pikel = pickle.load(pickle_in)
+pickle_in.close()
+w tym drugim wypadku ważnym jest by pamiętać o tym żeby otwarty plik zamknąć metodą .close()
+6. W tych plikach znajdziemy listę długości (np. w train/crayfish.pickle) n (= 50), oznacza to, że:
+a) w folderze crayfish znajdowało się n-1 (49) plików
+b) elementami o indeksach od 0 do n-1 (49) są listy, a w nich są dwa elementy:
+a') na indeksie 0 słownik reprezentujący histogram
+b') na indeksie 1 słownik reprezentujący unormowany histogram
+c) na ostatnim miejscu tej listy znajdziemy produkt TF-IDF - listę n-1 pythonowych słowników, gdzie kluczami są centra, a wartościami 'wagi' nadane przez tf-idf.
+7. W razie jakbym o czymś zapomniał, albo pomieszał, bądź macie pytania lub wątpliwości piszcie do Szymcia.
+8. Wrzucam dwa skrypty, jeden jest przystosowany do linuxa i chyba też maca, drugi do windowsa.
